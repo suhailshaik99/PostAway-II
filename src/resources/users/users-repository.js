@@ -3,6 +3,7 @@ import { Logout } from "./user-logout-model.js";
 export default class UserRepository {
   static userSignIn = async (email, password) => {
     const user = await User.findOne({ email }).select("+password");
+    if(!user) return false;
     const success = await user.comparePasswords(password, user.password);
     if (!success) return false;
     return user;
@@ -17,7 +18,7 @@ export default class UserRepository {
   };
 
   static getAllUsers = async () => {
-    return await User.find({});
+    return await User.find({}).populate('posts');
   };
 
   static updateUser = async (userId, newData) => {

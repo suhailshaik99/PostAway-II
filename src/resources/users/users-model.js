@@ -39,19 +39,29 @@ const userSchema = new mongoose.Schema(
     avatar: {
       type: String,
     },
+    posts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post",
+      },
+    ],
   },
   { timestamps: true }
 );
+
+// Schema Method
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 12);
   this.passwordConfirm = undefined;
   next();
 });
+// Schema Method
 userSchema.methods.comparePasswords = async function (
   candidatePassword,
   userPassword
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
+
 export const User = mongoose.model("User", userSchema);
