@@ -7,6 +7,7 @@ import { connectDB } from "./src/database/db-config.js";
 import { globalHandler } from "./src/utils/globalError.js";
 import { router as postRouter } from "./src/resources/posts/post-routes.js";
 import { router as userRouter } from "./src/resources/users/users-routes.js";
+import { router as commentRouter } from "./src/resources/comments/comments-route.js";
 
 dotenv.config({ path: "./config.env" });
 const app = express();
@@ -20,6 +21,7 @@ app.use(express.static(path.resolve("src", "uploads")));
 // Application Routes
 app.use("/api/users", userRouter);
 app.use("/api/posts", postRouter);
+app.use("/api/comments", commentRouter);
 
 // Middleware to handle the unhandled routes
 app.all("*", (req, res, next) => {
