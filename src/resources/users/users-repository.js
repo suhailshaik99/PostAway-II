@@ -3,7 +3,7 @@ import { Logout } from "./user-logout-model.js";
 export default class UserRepository {
   static userSignIn = async (email, password) => {
     const user = await User.findOne({ email }).select("+password");
-    if(!user) return false;
+    if (!user) return false;
     const success = await user.comparePasswords(password, user.password);
     if (!success) return false;
     return user;
@@ -13,12 +13,12 @@ export default class UserRepository {
     return await User.create(userData);
   };
 
-  static getUser = async (userId) => {
+  static getUserById = async (userId) => {
     return await User.findById(userId);
   };
 
   static getAllUsers = async () => {
-    return await User.find({}).populate('posts');
+    return await User.find({}).populate("posts");
   };
 
   static updateUser = async (userId, newData) => {
@@ -31,4 +31,13 @@ export default class UserRepository {
   static logoutUser = async (userId, token) => {
     return await Logout.create({ userId, token });
   };
+
+  static getUserFriends = async (userId) => {
+    return await User.findById(userId).select("friends -_id");
+  };
+
+  static getPendingRequests = async (userId) => {
+    return await User.findById(userId).select("incomingRequest -_id");
+  };
+
 }

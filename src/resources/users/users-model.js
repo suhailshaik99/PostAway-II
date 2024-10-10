@@ -45,6 +45,24 @@ const userSchema = new mongoose.Schema(
         ref: "Post",
       },
     ],
+    friends: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    incomingRequest: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Friend",
+      },
+    ],
+    outgoingRequest: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Friend",
+      },
+    ],
   },
   { timestamps: true }
 );

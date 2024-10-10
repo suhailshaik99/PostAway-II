@@ -38,7 +38,7 @@ export default class UserController {
     });
   });
 
-  static getUser = catchAsync(async (req, res, next) => {
+  static getUserById = catchAsync(async (req, res, next) => {
     const { userId } = req.params;
     const user = await UserRepository.getUser(userId);
     res.status(200).json({
