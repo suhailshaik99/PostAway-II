@@ -24,10 +24,13 @@ const postSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Comment",
     },
-  ]
+  ],
 });
 postSchema.virtual("commentsCount").get(function () {
   return this.comments.length;
+});
+postSchema.virtual("likesCount").get(function () {
+  return this.likes.length;
 });
 postSchema.set("toJSON", { virtuals: true });
 

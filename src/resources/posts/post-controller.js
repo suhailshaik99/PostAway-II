@@ -4,13 +4,12 @@ import { catchAsync } from "../../utils/catchAsync.js";
 export default class PostController {
   static createPost = catchAsync(async (req, res, next) => {
     if (!req.file)
-      //This url: /E://Postaway-II//src//uploads//1728453374829+cancelled%20cheque.jpg cannot be accessed on this server
       return next(new AppError("Please select a post to upload..."));
-    console.log(req.file);
     const imageUrl = `http://localhost:3000/${req.file.filename}`;
     const post = await PostRepository.createPost({
       ...req.body,
       post: imageUrl,
+      userId: req.user.id
     });
     await PostRepository.pushPostToUser(req.body.userId, post._id);
     console.log(post);
@@ -76,7 +75,7 @@ export default class PostController {
       updatedPost,
     });
   });
-  
+
   static deletePostById = catchAsync(async (req, res, next) => {
     const { postId } = req.params;
     const userId = req.user.id;
@@ -90,5 +89,4 @@ export default class PostController {
       deletedPost,
     });
   });
-
 }
