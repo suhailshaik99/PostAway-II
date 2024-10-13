@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";
 import validator from "validator";
@@ -63,6 +64,8 @@ const userSchema = new mongoose.Schema(
         ref: "Friend",
       },
     ],
+    otp: String,
+    optExpires: Date,
   },
   { timestamps: true }
 );
@@ -74,12 +77,21 @@ userSchema.pre("save", async function (next) {
   this.passwordConfirm = undefined;
   next();
 });
+
 // Schema Method
 userSchema.methods.comparePasswords = async function (
   candidatePassword,
   userPassword
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+// Generating the OTP
+userSchema.methods.createOtp = function () {
+  const otp = crypto.randomBytes(3).toString("hex");
+  this.otp = crypto.createHash("sha256").update(otp).digest("hex");
+  this.optExpires = Date.now() + 10 * 60 * 1000;
+  return otp;
 };
 
 export const User = mongoose.model("User", userSchema);

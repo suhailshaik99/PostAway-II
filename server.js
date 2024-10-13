@@ -10,6 +10,7 @@ import { router as userRouter } from "./src/resources/users/users-routes.js";
 import { router as likesRouter } from "./src/resources/likes/likes-route.js";
 import { router as commentRouter } from "./src/resources/comments/comments-route.js";
 import { router as friendsRouter } from "./src/resources/friendship/friends-routes.js";
+import { router as passwordRouter } from "./src/resources/password-reset/password-routes.js";
 
 dotenv.config({ path: "./config.env" });
 const app = express();
@@ -24,6 +25,7 @@ app.use(express.static(path.resolve("src", "uploads")));
 app.use("/api/users", userRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/likes", likesRouter);
+app.use("/api/otp", passwordRouter);
 app.use("/api/friends", friendsRouter);
 app.use("/api/comments", commentRouter);
 
